@@ -1,0 +1,44 @@
+CREATE DATABASE ebs;
+USE ebs;
+
+CREATE TABLE login (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50)
+);
+
+CREATE TABLE customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    contact_number VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE meters (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    meter_number VARCHAR(20) NOT NULL UNIQUE,
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE readings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    meter_id INT,
+    reading_date DATE NOT NULL,
+    reading_time TIME NOT NULL,
+    reading DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (meter_id) REFERENCES meters(id)
+);
+
+CREATE TABLE bills (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    meter_id INT,
+    bill_date DATE NOT NULL,
+    previous_reading DECIMAL(10, 2) NOT NULL,
+    current_reading DECIMAL(10, 2) NOT NULL,
+    units_consumed DECIMAL(10, 2) NOT NULL,
+    amount_due DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY(meter_id) REFERENCES meters(id)
+);
